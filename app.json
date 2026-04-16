@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Nexus by SQLI",
+    "slug": "nexus-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0E0E32"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sqli.nexus",
+      "infoPlist": {
+        "NSDocumentPickerUsageSuggestion": "Nexus a besoin d'accéder à vos documents pour les analyser."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0E0E32"
+      },
+      "package": "com.sqli.nexus",
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-document-picker"
+    ]
+  }
+}

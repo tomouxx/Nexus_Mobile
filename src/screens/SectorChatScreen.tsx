@@ -170,9 +170,11 @@ export default function SectorChatScreen({ route, navigation }: any) {
     }
   }, [inputText, attachedFiles, isLoading, chatHistory, systemPrompt]);
 
-  const renderSuggestion = ({ item }: { item: typeof sector.suggestions[0] }) => (
+  const cardWidth = (width - Spacing.xl * 2 - Spacing.sm) / 2;
+
+  const SuggestionCard = ({ item }: { item: typeof sector.suggestions[0] }) => (
     <TouchableOpacity
-      style={[styles.suggestionCard, { borderColor: sector.color + '30' }]}
+      style={[styles.suggestionCard, { borderColor: sector.color + '30', width: cardWidth }]}
       activeOpacity={0.7}
       onPress={() => sendMessage(item.prompt)}
     >
@@ -209,15 +211,18 @@ export default function SectorChatScreen({ route, navigation }: any) {
             <Text style={styles.welcomeDesc}>{sector.description}</Text>
 
             <Text style={styles.suggestionsLabel}>Suggestions</Text>
-            <FlatList
-              data={sector.suggestions}
-              renderItem={renderSuggestion}
-              keyExtractor={(item) => item.title}
-              numColumns={2}
-              columnWrapperStyle={styles.suggestionRow}
-              contentContainerStyle={styles.suggestionsGrid}
-              scrollEnabled={false}
-            />
+            <View style={styles.suggestionsGrid}>
+              <View style={styles.suggestionRow}>
+                {sector.suggestions.slice(0, 2).map((item) => (
+                  <SuggestionCard key={item.title} item={item} />
+                ))}
+              </View>
+              <View style={styles.suggestionRow}>
+                {sector.suggestions.slice(2, 4).map((item) => (
+                  <SuggestionCard key={item.title} item={item} />
+                ))}
+              </View>
+            </View>
           </View>
         ) : (
           <FlatList
@@ -302,9 +307,8 @@ const styles = StyleSheet.create({
   welcomeDesc: { fontSize: FontSize.sm, color: Colors.textSecondary, textAlign: 'center', marginBottom: Spacing.xl },
   suggestionsLabel: { fontSize: FontSize.sm, fontWeight: '600', color: Colors.textSecondary, marginBottom: Spacing.md, alignSelf: 'flex-start' },
   suggestionsGrid: { width: '100%' },
-  suggestionRow: { gap: Spacing.sm, marginBottom: Spacing.sm },
+  suggestionRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: Spacing.sm },
   suggestionCard: {
-    flex: 1,
     backgroundColor: Colors.surface,
     borderRadius: BorderRadius.md,
     padding: Spacing.md,

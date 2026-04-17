@@ -1,13 +1,10 @@
 // Nexus API Service - LLM Communication
 // Handles streaming chat completions and model listing
+// Connects directly to LLM server with Bearer token (no proxy needed)
 
-import { Platform } from 'react-native';
-
-// Default server URL - change this to your server address
-// On Android emulator, 10.0.2.2 maps to host machine's localhost
-const DEFAULT_SERVER = Platform.OS === 'android'
-  ? 'http://10.0.2.2:8000'
-  : 'http://localhost:8000';
+// Default: connect directly to the LLM server
+const DEFAULT_SERVER = 'http://CHLASLITASSAPR1.lan.la.sqli.com:8080';
+const API_KEY = 'YOUR_KEY';
 
 let serverUrl = DEFAULT_SERVER;
 
@@ -17,6 +14,14 @@ export function setServerUrl(url: string) {
 
 export function getServerUrl(): string {
   return serverUrl;
+}
+
+// ─── Common headers with auth ────────────────────────────────────
+function getHeaders(): Record<string, string> {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`,
+  };
 }
 
 // ─── Types ───────────────────────────────────────────────────────
@@ -42,7 +47,7 @@ export async function checkLLMStatus(): Promise<{ online: boolean; models: Model
   try {
     const response = await fetch(`${serverUrl}/v1/models`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getHeaders(),
     });
     if (!response.ok) throw new Error('Server error');
     const data = await response.json();
@@ -65,7 +70,7 @@ export async function streamChatCompletion(
   try {
     const response = await fetch(`${serverUrl}/v1/chat/completions`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getHeaders(),
       body: JSON.stringify({
         model,
         messages,
@@ -130,7 +135,7 @@ export async function chatCompletion(
   try {
     const response = await fetch(`${serverUrl}/v1/chat/completions`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getHeaders(),
       body: JSON.stringify({
         model,
         messages,
